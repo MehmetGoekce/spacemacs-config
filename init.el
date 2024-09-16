@@ -52,7 +52,7 @@ This function should only modify configuration layer settings."
                       auto-completion-minimum-prefix-length 1
                       ;; auto-completion-complete-with-key-sequence "fd"
                       )
-
+     c-c++
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      (clojure :variables
               ;; clojure-backend 'cider                 ; use cider and disable lsp
@@ -89,6 +89,7 @@ This function should only modify configuration layer settings."
      ;; Include emojis into everything
      emoji
 
+
      ;; SPC g s opens Magit git client full screen (q restores previous layout)
      ;; show word-granularity differences in current diff hunk
      ;; delta-plugin requires git-detlta install
@@ -102,6 +103,8 @@ This function should only modify configuration layer settings."
           ;; git-enable-magit-delta-plugin t
           )
 
+     go
+
      ;; graphviz - open-source graph declaration system
      ;; Used to generated graphs of Clojure project dependencies
      ;; https://develop.spacemacs.org/layers/+lang/graphviz/README.html
@@ -113,6 +116,7 @@ This function should only modify configuration layer settings."
      helm
 
      html
+     java
      javascript
      json
 
@@ -153,6 +157,8 @@ This function should only modify configuration layer settings."
           org-journal-time-format ""
           org-journal-carryover-items "TODO=\"TODO\"|TODO=\"DOING\"|TODO=\"BLOCKED\"|TODO=\"REVIEW\"")
 
+     php
+     python
 
      ;; Text-based file manager with preview - SPC a t r r
      (ranger :variables
@@ -353,7 +359,7 @@ It should only modify the values of Spacemacs settings."
    ;; by your Emacs build.
    ;; If the value is nil then no banner is displayed. (default 'official)
    ;; dotspacemacs-startup-banner 'official
-   dotspacemacs-startup-banner (concat dotspacemacs-directory "banners/practicalli-logo.svg")
+   dotspacemacs-startup-banner (concat dotspacemacs-directory "banners/lambda1.svg")
 
    ;; Scale factor controls the scaling (size) of the startup banner. Default
    ;; value is `auto' for scaling the logo automatically to fit all buffer
