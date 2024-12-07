@@ -24,3 +24,5 @@
 ;; https://github.com/syl20bnr/spacemacs/issues/16276
 (remove-hook 'helm-mode-hook 'helm-descbinds-mode)
 ;; ---------------------------------------
+;; Add this to your dotspacemacs/user-config function in .spacemacs
+(setq treesit-extra-load-path '("~/.emacs.d/tree-sitter/"))

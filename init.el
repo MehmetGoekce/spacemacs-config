@@ -52,19 +52,30 @@ This function should only modify configuration layer settings."
                       auto-completion-minimum-prefix-length 1
                       ;; auto-completion-complete-with-key-sequence "fd"
                       )
-     c-c++
+     (c-c++ :variables c-c++-backend 'lsp-clangd
+            c-c++-lsp-enable-semantic-highlight 'rainbow
+            c-c++-adopt-subprojects t
+            lsp-clients-clangd-executable "/usr/bin/clangd"
+            lsp-ui-doc-enable t
+            lsp-ui-sideline-enable t
+            lsp-clients-clangd-args '("-j=4"
+                                      "--background-index"
+                                      "--clang-tidy"
+                                      "--completion-style=detailed")
+)
+
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      (clojure :variables
               ;; clojure-backend 'cider                 ; use cider and disable lsp
-              clojure-enable-kaocha-runner t            ; enable Kaocha test runner
-              cider-repl-display-help-banner nil        ; disable help banner
-              cider-print-fn 'puget                     ; pretty printing with sorted keys / set values
+              clojure-enable-kaocha-runner t     ; enable Kaocha test runner
+              cider-repl-display-help-banner nil ; disable help banner
+              cider-print-fn 'puget ; pretty printing with sorted keys / set values
               clojure-indent-style 'align-arguments
               clojure-align-forms-automatically t
               clojure-toplevel-inside-comment-form t ; clashes with LSP
-              cider-result-overlay-position 'at-point   ; results shown right after expression
+              cider-result-overlay-position 'at-point ; results shown right after expression
               cider-overlays-use-font-lock t
-              cider-repl-buffer-size-limit 100          ; limit lines shown in REPL buffer
+              cider-repl-buffer-size-limit 100 ; limit lines shown in REPL buffer
               nrepl-use-ssh-fallback-for-remote-hosts t ; connect via ssh to remote hosts
               )
 
@@ -78,6 +89,9 @@ This function should only modify configuration layer settings."
      ;; Tools to work with comma separate values e.g. data science data
      ;; https://develop.spacemacs.org/layers/+lang/csv/README.html
      csv
+
+     (dap :variables dap-enable-ui-controls nil ; don't display the mouse buttons
+          dap-auto-configure-features '(sessions locals breakpoints expressions tooltip))
 
      ;; Dockerfile LSP and docker container management
      (docker :variables
@@ -103,8 +117,9 @@ This function should only modify configuration layer settings."
           ;; git-enable-magit-delta-plugin t
           )
 
-     go
-
+     ;; Go Layer
+     ;;https://develop.spacemacs.org/layers/+lang/go/README.html#layer
+     (go :variables go-backend 'lsp)
      ;; graphviz - open-source graph declaration system
      ;; Used to generated graphs of Clojure project dependencies
      ;; https://develop.spacemacs.org/layers/+lang/graphviz/README.html
@@ -116,24 +131,25 @@ This function should only modify configuration layer settings."
      helm
 
      html
-     java
+     (java :variables
+           java-backend 'lsp)
      javascript
      json
 
      ;; Language server protocol with minimal visual impact
      ;; https://practical.li/spacemacs/install-spacemacs/clojure-lsp/
      (lsp :variables
-          lsp-headerline-breadcrumb-enable t              ; Breadcrumb trail
-          lsp-headerline-breadcrumb-segments '(symbols)   ; namespace & symbols, no file path
-          lsp-ui-peek-enable nil                          ; popups for refs, errors, symbols, etc.
-          lsp-semantic-tokens-enable t                    ; enhance syntax highlight
-          lsp-treemacs-error-list-current-project-only t  ; limit errors to current project
-          lsp-idle-delay 1.5                              ; smooth LSP features response
-          lsp-eldoc-enable-hover nil                      ; disable all hover actions
-          lsp-ui-doc-enable nil                           ; doc hover popups
-          lsp-ui-sideline-enable nil                      ; sidebar code actions visual indicator
-          treemacs-space-between-root-nodes nil           ; spacing in treemacs views
-          lsp-log-io t                                    ; Log client-server json communication
+          lsp-headerline-breadcrumb-enable t            ; Breadcrumb trail
+          lsp-headerline-breadcrumb-segments '(symbols) ; namespace & symbols, no file path
+          lsp-ui-peek-enable nil        ; popups for refs, errors, symbols, etc.
+          lsp-semantic-tokens-enable t  ; enhance syntax highlight
+          lsp-treemacs-error-list-current-project-only t ; limit errors to current project
+          lsp-idle-delay 1.5            ; smooth LSP features response
+          lsp-eldoc-enable-hover nil    ; disable all hover actions
+          lsp-ui-doc-enable nil         ; doc hover popups
+          lsp-ui-sideline-enable nil    ; sidebar code actions visual indicator
+          treemacs-space-between-root-nodes nil ; spacing in treemacs views
+          lsp-log-io t                  ; Log client-server json communication
           )
 
      markdown
@@ -185,15 +201,15 @@ This function should only modify configuration layer settings."
      ;; Configuration: https://github.com/seagle0128/doom-modeline#customize
      (spacemacs-modeline :variables
                          doom-modeline-height 12
-                         doom-modeline-bar-width 0                  ; size of bar icon at start of modeline
-                         doom-modeline-buffer-state-icon t          ; disk icon for unsaved changes (default)
-                         doom-modeline-major-mode-color-icon t      ; color icon of major mode
+                         doom-modeline-bar-width 0 ; size of bar icon at start of modeline
+                         doom-modeline-buffer-state-icon t ; disk icon for unsaved changes (default)
+                         doom-modeline-major-mode-color-icon t ; color icon of major mode
                          doom-modeline-buffer-file-name-style 'relative-to-project
                          doom-modeline-display-default-persp-name t ; layout name
-                         doom-modeline-minor-modes nil              ; show minor modes
-                         doom-modeline-modal nil                    ; show Evil state icon/text
+                         doom-modeline-minor-modes nil ; show minor modes
+                         doom-modeline-modal nil ; show Evil state icon/text
                          ;; doom-modeline-modal-icon t              ; icon when t, ascii when nil
-                         doom-modeline-buffer-encoding nil          ; remove UTF-8, etc.
+                         doom-modeline-buffer-encoding nil ; remove UTF-8, etc.
                          )
 
      ;; Spell as you type with Flyspell package,
@@ -204,6 +220,11 @@ This function should only modify configuration layer settings."
      ;; Use original flycheck fringe bitmaps
      ;; (syntax-checking :variables
      ;;                  syntax-checking-use-original-bitmaps t)
+
+     ;; tree-sitter layer
+     ;;https://develop.spacemacs.org/layers/+tools/tree-sitter/README.html
+     (tree-sitter :variables
+                  tree-sitter-syntax-highlight-enable t)
 
      ;; Visual file manager - `SPC p t'
      ;; treemacs-no-png-images t removes file and directory icons
@@ -239,13 +260,15 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '(clojure-essential-ref
+   dotspacemacs-additional-packages '((combobulate :location (recipe
+                                                              :fetcher github
+                                                              :repo "mickeynp/combobulate"))
+                                      clojure-essential-ref
                                       (evil-surround
                                        :location
                                        (recipe :fetcher github
                                                :repo "emacs-evil/evil-surround"
                                                :commit "f273821f575ace519066fb106ee45a5b8577475f")))
-
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
@@ -303,6 +326,11 @@ It should only modify the values of Spacemacs settings."
    ;; Maximum allowed time in seconds to contact an ELPA repository.
    ;; (default 5)
    dotspacemacs-elpa-timeout 5
+
+   ;;ELPA archives
+   dotspacemacs-elpa-archives '(("melpa" . "https://melpa.org/packages/")
+                                ("org" . "https://orgmode.org/elpa/")
+                                ("gnu" . "https://elpa.gnu.org/packages/"))
 
    ;; Set `gc-cons-threshold' and `gc-cons-percentage' when startup finishes.
    ;; This is an advanced option and should not be changed unless you suspect
@@ -789,9 +817,8 @@ before packages are loaded."
   ;; (setq eshell-config-file (file-truename (concat dotspacemacs-directory "eshell-config.el")))
   ;; (load eshell-config-file)
 
-)
 
-
+   )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 
