@@ -6,3 +6,6 @@ recentf
 
 # Emacs Customize settings are machine-specific and written automatically
 emacs-custom-settings.el
+
+# Local clones of packages (combobulate is installed via dotspacemacs-additional-packages)
+site-lisp/
