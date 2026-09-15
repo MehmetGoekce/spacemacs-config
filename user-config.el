@@ -27,6 +27,18 @@
 ;; Add this to your dotspacemacs/user-config function in .spacemacs
 (setq treesit-extra-load-path '("~/.emacs.d/tree-sitter/"))
 
+
+(defun clerk-show ()
+  "Save the current buffer and show it as a Clerk notebook."
+  (interactive)
+  (when-let* ((filename (buffer-file-name)))
+    (save-buffer)
+    (cider-interactive-eval
+     (concat "(nextjournal.clerk/show! \"" filename "\")"))))
+
+;; , e c - M-RET is the Spacemacs major-mode leader in the GUI and would be shadowed
+(spacemacs/set-leader-keys-for-major-mode 'clojure-mode "ec" 'clerk-show)
+
 ;; ---------------------------------------
 ;; C/C++: lsp-ui doc popups and sideline only in C/C++ buffers
 ;; (globally disabled in the lsp layer for minimal visual impact)

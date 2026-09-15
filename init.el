@@ -20,14 +20,14 @@ This function should only modify configuration layer settings."
    ;; installation feature and you have to explicitly list a layer in the
    ;; variable `dotspacemacs-configuration-layers' to install it.
    ;; (default 'unused)
-   dotspacemacs-enable-lazy-installation nil
+   dotspacemacs-enable-lazy-installation 'unused
 
    ;; If non-nil then Spacemacs will ask for confirmation before installing
    ;; a layer lazily. (default t)
    dotspacemacs-ask-for-lazy-installation t
 
    ;; List of additional paths where to look for configuration layers.
-   ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
+   ;; Paths must have a trailing slash (i.e. "~/.mycontribs/")
    dotspacemacs-configuration-layer-path '()
 
    ;; List of configuration layers to load.
@@ -176,7 +176,10 @@ This function should only modify configuration layer settings."
           org-journal-carryover-items "TODO=\"TODO\"|TODO=\"DOING\"|TODO=\"BLOCKED\"|TODO=\"REVIEW\"")
 
      php
-     python
+     ;; Python development
+     (python :variables
+             ;; Use LSP backend for modern IDE features
+             python-backend 'lsp)
 
      ;; Text-based file manager with preview - SPC a t r r
      (ranger :variables
@@ -262,16 +265,25 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '((combobulate :location (recipe
+  ;; dotspacemacs-additional-packages '((combobulate :location (recipe
+   ;;                                                           :fetcher github
+     ;;                                                         :repo "mickeynp/combobulate"))
+       ;;                               clojure-essential-ref
+         ;;                             (evil-surround
+           ;;                            :location
+             ;;                          (recipe :fetcher github
+               ;;                                :repo "emacs-evil/evil-surround"
+                 ;;i                              :commit "f273821f575ace519066fb106ee45a5b8577475f")))
+
+   dotspacemacs-additional-packages '(
+                                      (combobulate :location (recipe
                                                               :fetcher github
                                                               :repo "mickeynp/combobulate"))
                                       clojure-essential-ref
-                                      (evil-surround
-                                       :location
-                                       (recipe :fetcher github
-                                               :repo "emacs-evil/evil-surround"
-                                               :commit "f273821f575ace519066fb106ee45a5b8577475f")))
-   ;; A list of packages that cannot be updated.
+                                      (evil-surround :location (recipe
+                                                                :fetcher github
+                                                                :repo "emacs-evil/evil-surround"
+                                                                :commit "f273821f575ace519066fb106ee45a5b8577475f")))   ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
@@ -773,6 +785,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; simplifying version control of the Spacemacs configuration file
   (setq custom-file (file-truename (concat dotspacemacs-directory "emacs-custom-settings.el")))
   (load custom-file)
+
+  ;; Workaround for treemacs--buffer-name-prefix Bug
+  (defvar treemacs--buffer-name-prefix "*Treemacs-")
 )
 
 
