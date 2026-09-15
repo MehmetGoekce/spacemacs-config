@@ -784,7 +784,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Save `dotspacemacs/emacs-custom-settings' in a separate file
   ;; simplifying version control of the Spacemacs configuration file
   (setq custom-file (file-truename (concat dotspacemacs-directory "emacs-custom-settings.el")))
-  (load custom-file)
+  (load custom-file 'noerror)
 
   ;; Workaround for treemacs--buffer-name-prefix Bug
   (defvar treemacs--buffer-name-prefix "*Treemacs-")
