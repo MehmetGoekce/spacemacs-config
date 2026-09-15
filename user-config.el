@@ -26,3 +26,11 @@
 ;; ---------------------------------------
 ;; Add this to your dotspacemacs/user-config function in .spacemacs
 (setq treesit-extra-load-path '("~/.emacs.d/tree-sitter/"))
+
+;; ---------------------------------------
+;; C/C++: lsp-ui doc popups and sideline only in C/C++ buffers
+;; (globally disabled in the lsp layer for minimal visual impact)
+(add-hook 'c-mode-common-hook
+          (lambda ()
+            (setq-local lsp-ui-doc-enable t
+                        lsp-ui-sideline-enable t)))

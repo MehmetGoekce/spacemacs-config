@@ -52,17 +52,19 @@ This function should only modify configuration layer settings."
                       auto-completion-minimum-prefix-length 1
                       ;; auto-completion-complete-with-key-sequence "fd"
                       )
-     (c-c++ :variables c-c++-backend 'lsp-clangd
+
+
+      (c-c++ :variables c-c++-backend 'lsp-clangd
             c-c++-lsp-enable-semantic-highlight 'rainbow
             c-c++-adopt-subprojects t
             lsp-clients-clangd-executable "/usr/bin/clangd"
-            lsp-ui-doc-enable t
-            lsp-ui-sideline-enable t
+            ;; lsp-ui doc/sideline only for C/C++: see c-mode-common-hook in user-config.el
             lsp-clients-clangd-args '("-j=4"
                                       "--background-index"
                                       "--clang-tidy"
                                       "--completion-style=detailed")
 )
+
 
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
      (clojure :variables
@@ -149,7 +151,7 @@ This function should only modify configuration layer settings."
           lsp-ui-doc-enable nil         ; doc hover popups
           lsp-ui-sideline-enable nil    ; sidebar code actions visual indicator
           treemacs-space-between-root-nodes nil ; spacing in treemacs views
-          lsp-log-io t                  ; Log client-server json communication
+          lsp-log-io nil                ; t logs client-server json communication (debugging only, slow)
           )
 
      markdown
