@@ -10,13 +10,25 @@ A personal Spacemacs user configuration (`~/.spacemacs.d`, the `dotspacemacs-dir
 
 ## Commands
 
-There is no build, lint or test suite. The only verification available outside a running Emacs is a paren/read check:
+There is no build, lint or test suite. Two checks work outside a running Emacs.
+
+Paren/read check of a single file (fast, no side effects):
 
 ```bash
 emacs --batch --eval '(with-temp-buffer (insert-file-contents "init.el") (emacs-lisp-mode) (check-parens))'
 ```
 
-Do not byte-compile these files or `--batch -l` them: they depend on Spacemacs functions (`spacemacs/set-leader-keys`, `evil-global-set-key`, ...) that only exist inside a full Spacemacs session.
+Note that `check-parens` does not catch a broken first line or stray top-level symbols; a file can pass it and still fail to load.
+
+Full startup of Spacemacs with this configuration (about a minute), printing only startup errors:
+
+```bash
+cd ~ && emacs --batch -l ~/.emacs.d/init.el 2>&1 | grep -a "^Error\|(Spacemacs) Err"
+```
+
+This is a real startup: it installs missing packages and deletes orphaned ones exactly as the GUI would (`dotspacemacs-install-packages 'used-only`). Append `-l some-check.el` to inspect state afterwards (open a file, check `major-mode`, `require` a package). Font-lock and LSP do not start in batch mode, so use `font-lock-ensure` to test highlighting.
+
+Do not byte-compile the `*-config.el` files or load them on their own: they depend on Spacemacs functions (`spacemacs/set-leader-keys`, `evil-global-set-key`, ...) that only exist inside a full Spacemacs session.
 
 Changes take effect inside Emacs:
 
@@ -47,10 +59,20 @@ To add a new area of configuration, create a `<topic>-config.el` and add a `setq
 - **lsp-ui doc/sideline**: disabled globally in the `lsp` layer variables in `init.el`, then re-enabled buffer-locally for C/C++ via a `c-mode-common-hook` in `user-config.el`. Changing one without the other breaks the intended "minimal UI except in C/C++" behaviour.
 - **Org TODO workflow**: `org-journal-carryover-items` in the `org` layer variables references the `DOING`/`BLOCKED`/`REVIEW` keywords that are only defined in the (currently unloaded) `org-config.el`.
 - **`clojure-essential-ref`** and **`combobulate`** are installed through `dotspacemacs-additional-packages`; the keybindings for the former are in `clojure-config.el`. `evil-surround` is pinned to a specific commit there on purpose.
+- **CUDA**: `cuda-mode` (also in `dotspacemacs-additional-packages`) handles `.cu`/`.cuh` and derives from `c++-mode`, so the `c++-mode` hooks and the C/C++ lsp-ui hook apply and clangd accepts it. The `c-c++` layer's `,` major-mode bindings are registered for `c-mode`/`c++-mode` only and are absent in `cuda-mode`; tree-sitter has no CUDA grammar, so highlighting comes from cc-mode font-lock. The toolchain is CUDA 12.6 in `/usr/local/cuda` (`nvcc`, `cuda-gdb`); clangd is 14, which predates it.
 
 ### Keybinding conventions
 
 User bindings go under the `SPC o` prefix (reserved by Spacemacs for users), e.g. `SPC o p p` for Portal. Major-mode bindings use `spacemacs/set-leader-keys-for-major-mode` (reached via `,`).
+
+## Troubleshooting startup
+
+- **"Pick your editing style for recovery"** at startup means `init.el` failed to load (syntax error or a stray top-level form). Fix the file; nothing else is wrong.
+- **`(Spacemacs) Error in dotspacemacs/init: Variable ... doesn't match its type`**: Spacemacs validates `dotspacemacs-*` values against the current template, so a value that was valid in an older Spacemacs can be rejected after an update.
+- **After updating Spacemacs (`git pull` in `~/.emacs.d`)**, errors like `Assertion failed: (listp args)` in a `use-package` `:config` usually come from Spacemacs-local packages (`layers/**/local/<name>`) whose built copy in `~/.emacs.d/elpa/<version>/develop/<name>-<date>/` is older than the layer source. Remove the stale directory and start Spacemacs; it rebuilds the package.
+- **`failed to provide feature` or `void-variable` on loading a package** points to a truncated or stale `.elc` (compiled while a dependency was missing). Recompile the file inside a full Spacemacs batch session, with the dependency loaded first.
+- Warnings from background native compilation are logged to `*Warnings*` without popping it up (`native-comp-async-report-warnings-errors 'silent` in `dotspacemacs/user-init`).
+- `sudo` needs a password and cannot be run from Claude Code; system packages must be installed by the user in a terminal.
 
 ## Files that are not source
 
