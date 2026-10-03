@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A personal Spacemacs user configuration (`~/.spacemacs.d`, the `dotspacemacs-directory`), forked from [practicalli/spacemacs-config](https://github.com/practicalli/spacemacs-config) and extended with C/C++, Go, Java, PHP, Python and DAP layers. Spacemacs itself lives in `~/.emacs.d` (on the `develop` branch) and is not part of this repo. Emacs is a source build at `/usr/local/bin/emacs` (30.0.50).
 
-`CHANGELOG.md` is inherited from upstream Practicalli and stops in 2023; it does not describe this fork's changes. The license is CC BY-SA 4.0, so `README.md` must keep the credit to Practicalli.
+The license is CC BY-SA 4.0, so `README.md` must keep the credit to Practicalli.
 
 ## Commands
 
