@@ -1,68 +1,79 @@
-# Practicalli Spacemacs configuration
+# Spacemacs configuration
 
-```none
-██████╗ ██████╗  █████╗  ██████╗████████╗██╗ ██████╗ █████╗ ██╗     ██╗     ██╗
-██╔══██╗██╔══██╗██╔══██╗██╔════╝╚══██╔══╝██║██╔════╝██╔══██╗██║     ██║     ██║
-██████╔╝██████╔╝███████║██║        ██║   ██║██║     ███████║██║     ██║     ██║
-██╔═══╝ ██╔══██╗██╔══██║██║        ██║   ██║██║     ██╔══██║██║     ██║     ██║
-██║     ██║  ██║██║  ██║╚██████╗   ██║   ██║╚██████╗██║  ██║███████╗███████╗██║
-╚═╝     ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝╚═╝  ╚═╝╚══════╝╚══════╝╚═╝
+Personal [Spacemacs](https://github.com/syl20bnr/spacemacs/) user configuration (`~/.spacemacs.d`).
+
+It started from the [Practicalli Spacemacs configuration](https://github.com/practicalli/spacemacs-config) by John Stevenson, which is built around Clojure development, and has since been extended for C/C++, CUDA, Go, Java, PHP and Python.
+
+## What is configured
+
+- **Editing**: Vim style, `doom-gruvbox` theme, doom mode-line, Fira Code with ligatures in programming modes
+- **Languages**: Clojure (CIDER + LSP), C/C++ (clangd), CUDA (`cuda-mode`), Go, Java, PHP, Python, JavaScript, HTML, YAML, JSON, Markdown, Emacs Lisp
+- **LSP**: quiet by default (no doc popups, no sideline); both are switched on again in C/C++ buffers only
+- **Tools**: Magit with Forge, DAP debugging, Docker, Treemacs, Ranger, vterm, tree-sitter highlighting, org-journal
+- **Snippets**: yasnippet templates for Clojure, ClojureScript, Markdown, Org and shell in `snippets/`
+
+## Requirements
+
+- Emacs 28.2 or newer
+- Spacemacs on the `develop` branch in `~/.emacs.d`
+- [Fira Code](https://github.com/tonsky/FiraCode) font
+- `ripgrep` for project search
+- `clangd` at `/usr/bin/clangd` for C/C++
+- `cmake`, `libtool-bin` and `libvterm-dev` to build the vterm module
+- `aspell` with the dictionaries you need (e.g. `aspell-de`) for spell checking
+- The language servers for the other languages you use; lsp-mode offers to install most of them on first use
+
+For CUDA development, the CUDA toolkit (`nvcc`, `cuda-gdb`) must be on the `PATH` that Emacs sees.
+
+## Installation
+
+```bash
+git clone https://github.com/MehmetGoekce/spacemacs-config.git ~/.spacemacs.d
 ```
 
+Remove an existing `~/.spacemacs` file, as it takes precedence over `~/.spacemacs.d/init.el`. Start Emacs; Spacemacs installs all packages on first launch.
 
-User configuration to support the [Practicalli Spacemacs book](https://practical.li/spacemacs).
+## Layout
 
-- recommended layers for use for enhanced Clojure development experience
-- numerous tweaks for general [Spacemacs](https://github.com/syl20bnr/spacemacs/) usage
-- snippets (code and configuration templates) for clojure and markdown languages
+`init.el` is the main Spacemacs configuration file: layers and their variables, Spacemacs settings, and additional packages.
 
-[![Spacemacs Practicalli - Interactive Clojure development with Emacs and CIDER](https://raw.githubusercontent.com/practicalli/graphic-design/live/book-covers/practicalli-spacemacs-book-banner.png)](https://practical.li/spacemacs)
+`dotspacemacs/user-config` contains no configuration itself. It loads these files, in order:
 
-# Requirements
+| File | Content |
+|---|---|
+| `user-config.el` | General tweaks, Clerk notebook command, lsp-ui in C/C++ buffers |
+| `clojure-config.el` | clojure-mode options, Portal data inspector commands, custom Clojure functions |
+| `theme-config.el` | Custom doom mode-line |
+| `version-control-config.el` | Magit and Forge |
 
-[Practicalli Spacemacs - install spacemacs](https://practical.li/spacemacs/install-spacemacs/) details installation and pre-install requirements.
+Present but not loaded (their `load` calls in `init.el` are commented out):
 
+- `org-config.el` — TODO workflow and faces for Org
+- `eshell-config.el` — custom eshell prompt
+- `deprecated-config.el` — archive of retired configuration
 
-## Feedback & Contributing
+To add your own configuration, create a `<topic>-config.el` file and add a `load` for it in `dotspacemacs/user-config`.
 
-Please follow the [contributing guide for all Practicalli books and configurations](https://practical.li/spacemacs/introduction/contributing/).  Thank you.
+### Files that are not tracked
 
+- `emacs-custom-settings.el` — written by Emacs Customize, loaded if present
+- `.spacemacs.env` — environment variables captured by Spacemacs; regenerate with `SPC SPC spacemacs/force-init-spacemacs-env` after changing your shell `PATH`
+- `site-lisp/` — local package clones
 
-## Configuration Design
+## CUDA
 
-`dotspacemacs/user-config` section includes additional configuration and is defined across several files to make it easier to manage updates to the configuration over time and avoid merging changes with your own customisation.
+`.cu` and `.cuh` files open in `cuda-mode`, which derives from `c++-mode`, so clangd and the C/C++ LSP settings apply. The `,` major-mode key bindings of the C/C++ layer are not available there; use the global commands instead:
 
-Loaded configuration files:
+| Key | Action |
+|---|---|
+| `SPC c c` | Compile, e.g. `nvcc -O3 file.cu -o prog` |
+| `SPC c r` | Recompile |
+| `SPC SPC gdb` | Debug, with `cuda-gdb -i=mi ./prog` (build with `-g -G`) |
 
-* `clojure-config.el` - clojure-mode options, evil-cleverparents enable, portal tap> on nrepl & keybindings, custom elisp functions
-* `theme-config.el` - theme and mode-line configuration
-* `org-config.el` - notes and task faces and workflow
-* `version-control-config.el` - git, Magit and Forge configuration (predominantly forge config)
-* `user-config.el` - general config tweaks
+clangd needs a `compile_commands.json` in the project, and usually a `.clangd` file that removes the `nvcc`-only flags.
 
-> `eshell-config.el` defines a custom prompt for eshell, although this configuration file is not loaded.  Practicalli now uses vterm to use the operating system shell in a terminal popup window.
+## Credits and license
 
-The `load-file` function includes the code from each file during startup.  Comment the `load-file` expression if that configuration is not required, or add your own configuration files to easily extend the Practicalli configuration without having to merge changes.
+Based on [practicalli/spacemacs-config](https://github.com/practicalli/spacemacs-config). The [Practicalli Spacemacs book](https://practical.li/spacemacs) explains the Clojure workflow this configuration was designed for.
 
-`.spacemacs.d/init.el` is main Spacemacs configuration file (although a $HOME/.spacemacs) file will supersede this configuration and should therefore be removed.
-
-
-## Getting help
-
-Discuss this guide [on #practicalli channel of the Clojurians Slack community](https://clojurians.slack.com/messages/practicalli)
-
-[Clojurians community - Getting Help](https://practical.li/blog/posts/cloure-community-getting-help/) shows other ways to get help with Clojure.
-
-
-## Sponsor Practicalli
-
-[![Sponsor practicalli-john](https://raw.githubusercontent.com/practicalli/graphic-design/live/buttons/practicalli-github-sponsors-button.png)](https://github.com/sponsors/practicalli-john/)
-
-The majority of my work is focused on the [Practicalli series of books and videos](https://practical.li/) and an advisory role with several communities
-
-Thank you to [Cognitect](https://www.cognitect.com/), [Nubank](https://nubank.com.br/) and a wide range of other [sponsors](https://github.com/sponsors/practicalli-john#sponsors) for your continued support
-
-
-Thank you
-
-[practical.li](https://practical.li/)
+Licensed under [Creative Commons Attribution-ShareAlike 4.0 International](LICENSE), the same license as the original.
