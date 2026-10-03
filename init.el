@@ -410,7 +410,7 @@ It should only modify the values of Spacemacs settings."
    ;; contents, to a maximum of the full image height and a minimum of 3 line
    ;; heights. If set to a number (int or float) it is used as a constant
    ;; scaling factor for the default logo size.
-   dotspacemacs-startup-banner-scale 'auto
+   dotspacemacs-startup-banner-scale 1.0
 
    ;; List of items to show in startup buffer or an association list of
    ;; the form `(list-type . list-size)`. If nil then it is disabled.
@@ -794,6 +794,15 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Log warnings from background native compilation of packages to the
   ;; *Warnings* buffer without popping it up
   (setq native-comp-async-report-warnings-errors 'silent)
+
+  ;; Centre the startup banner. Spacemacs measures the image with Emacs'
+  ;; automatic HiDPI image scaling applied, then replaces that scale with
+  ;; `dotspacemacs-startup-banner-scale', so the left margin is computed for a
+  ;; wider image than the one displayed.
+  (define-advice spacemacs-buffer//insert-image-banner
+      (:around (fn &rest args) native-image-scale)
+    (let ((image-scaling-factor 1.0))
+      (apply fn args)))
 )
 
 
