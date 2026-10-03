@@ -280,6 +280,8 @@ This function should only modify configuration layer settings."
                                                               :fetcher github
                                                               :repo "mickeynp/combobulate"))
                                       clojure-essential-ref
+                                      ;; Major mode for CUDA .cu/.cuh files, derived from c++-mode
+                                      cuda-mode
                                       (evil-surround :location (recipe
                                                                 :fetcher github
                                                                 :repo "emacs-evil/evil-surround"
@@ -690,9 +692,9 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-persistent-server nil
 
    ;; List of search tool executable names. Spacemacs uses the first installed
-   ;; tool of the list. Supported tools are `rg', `ag', `pt', `ack' and `grep'.
-   ;; (default '("rg" "ag" "pt" "ack" "grep"))
-   dotspacemacs-search-tools '("rg" "ag" "pt" "ack" "grep")
+   ;; tool of the list. Supported tools are `rg', `ag', `ack' and `grep'.
+   ;; (default '("rg" "ag" "ack" "grep"))
+   dotspacemacs-search-tools '("rg" "ag" "ack" "grep")
 
    ;; Format specification for setting the frame title.
    ;; %a - the `abbreviated-file-name', or `buffer-name'
@@ -788,6 +790,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Workaround for treemacs--buffer-name-prefix Bug
   (defvar treemacs--buffer-name-prefix "*Treemacs-")
+
+  ;; Log warnings from background native compilation of packages to the
+  ;; *Warnings* buffer without popping it up
+  (setq native-comp-async-report-warnings-errors 'silent)
 )
 
 
