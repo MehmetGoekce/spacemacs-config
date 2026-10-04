@@ -226,6 +226,13 @@ This function should only modify configuration layer settings."
      ;; (syntax-checking :variables
      ;;                  syntax-checking-use-original-bitmaps t)
 
+     ;; Override theme faces per theme
+     ;; Light yellow background with black text for the light gruvbox theme
+     (theming :variables
+              theming-modifications
+              '((doom-gruvbox-light
+                 (default :background "#ffffdd" :foreground "#000000"))))
+
      ;; tree-sitter layer
      ;;https://develop.spacemacs.org/layers/+tools/tree-sitter/README.html
      (tree-sitter :variables
@@ -462,8 +469,8 @@ It should only modify the values of Spacemacs settings."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(doom-gruvbox
-                         doom-gruvbox-light
+   dotspacemacs-themes '(doom-gruvbox-light
+                         doom-gruvbox
                          spacemacs-dark
                          spacemacs-light)
 
