@@ -57,7 +57,8 @@ This function should only modify configuration layer settings."
       (c-c++ :variables c-c++-backend 'lsp-clangd
             c-c++-lsp-enable-semantic-highlight 'rainbow
             c-c++-adopt-subprojects t
-            lsp-clients-clangd-executable "/usr/bin/clangd"
+            ;; clangd release binary (system clangd 14 predates CUDA 12.6)
+            lsp-clients-clangd-executable (expand-file-name "~/.local/opt/clangd_23.1.0/bin/clangd")
             ;; lsp-ui doc/sideline only for C/C++: see c-mode-common-hook in user-config.el
             lsp-clients-clangd-args '("-j=4"
                                       "--background-index"

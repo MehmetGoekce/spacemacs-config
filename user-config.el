@@ -46,3 +46,9 @@
           (lambda ()
             (setq-local lsp-ui-doc-enable t
                         lsp-ui-sideline-enable t)))
+
+;; CUDA: cuda-mode derives from c++-mode, but Spacemacs only runs
+;; <major-mode>-local-vars-hook, so the c-c++ layer's LSP, company, flycheck
+;; and dap setup would never start in .cu/.cuh buffers
+(add-hook 'cuda-mode-local-vars-hook
+          (lambda () (run-hooks 'c++-mode-local-vars-hook)))
