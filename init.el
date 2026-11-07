@@ -54,7 +54,7 @@ This function should only modify configuration layer settings."
                       )
 
 
-      (c-c++ :variables c-c++-backend 'lsp-clangd
+     (c-c++ :variables c-c++-backend 'lsp-clangd
             c-c++-lsp-enable-semantic-highlight 'rainbow
             c-c++-adopt-subprojects t
             ;; clangd release binary (system clangd 14 predates CUDA 12.6)
@@ -64,7 +64,7 @@ This function should only modify configuration layer settings."
                                       "--background-index"
                                       "--clang-tidy"
                                       "--completion-style=detailed")
-)
+            )
 
 
      ;; https://develop.spacemacs.org/layers/+lang/clojure/README.html
@@ -190,6 +190,8 @@ This function should only modify configuration layer settings."
              ranger-cleanup-on-disable t
              ranger-ignored-extensions '("mkv" "flv" "iso" "mp4"))
 
+     rust
+
      ;; SPC ' runs shell in a popup buffer
      (shell :variables
             shell-default-shell 'vterm
@@ -273,15 +275,15 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-  ;; dotspacemacs-additional-packages '((combobulate :location (recipe
+   ;; dotspacemacs-additional-packages '((combobulate :location (recipe
    ;;                                                           :fetcher github
-     ;;                                                         :repo "mickeynp/combobulate"))
-       ;;                               clojure-essential-ref
-         ;;                             (evil-surround
-           ;;                            :location
-             ;;                          (recipe :fetcher github
-               ;;                                :repo "emacs-evil/evil-surround"
-                 ;;i                              :commit "f273821f575ace519066fb106ee45a5b8577475f")))
+   ;;                                                         :repo "mickeynp/combobulate"))
+   ;;                               clojure-essential-ref
+   ;;                             (evil-surround
+   ;;                            :location
+   ;;                          (recipe :fetcher github
+   ;;                                :repo "emacs-evil/evil-surround"
+   ;;i                              :commit "f273821f575ace519066fb106ee45a5b8577475f")))
 
    dotspacemacs-additional-packages '(
                                       (combobulate :location (recipe
@@ -782,7 +784,7 @@ default it calls `spacemacs/load-spacemacs-env' which loads the environment
 variables declared in `~/.spacemacs.env' or `~/.spacemacs.d/.spacemacs.env'.
 See the header of this file for more information."
   (spacemacs/load-spacemacs-env)
-)
+  )
 
 (defun dotspacemacs/user-init ()
   "Initialization for user code:
@@ -811,7 +813,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
       (:around (fn &rest args) native-image-scale)
     (let ((image-scaling-factor 1.0))
       (apply fn args)))
-)
+  )
 
 
 (defun dotspacemacs/user-load ()
@@ -819,7 +821,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-)
+  )
 
 
 (defun dotspacemacs/user-config ()
@@ -858,7 +860,7 @@ before packages are loaded."
   ;; (load eshell-config-file)
 
 
-   )
+  )
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
 
